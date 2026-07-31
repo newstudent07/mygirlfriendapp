@@ -997,7 +997,6 @@ document.addEventListener('DOMContentLoaded', () => {
   renderQuiz();
   updateLoveMeter(500);
   renderCustomMemories();
-  updateVideoCarousel();
   setupAutoStartMusic();
 });
 
