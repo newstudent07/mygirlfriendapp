@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy National Girlfriend's Day, My Love! 💖</title>
+  
+  <!-- SEO & Social Meta Tags -->
+  <meta name="description" content="A romantic, interactive, and cute celebration of National Girlfriend's Day filled with memories, reasons why I love you, games, and surprises.">
+  <meta property="og:title" content="Happy National Girlfriend's Day, My Love! 💖">
+  <meta property="og:description" content="A tiny interactive corner of the internet made with endless love.">
+
+  <!-- Google Fonts: Playfair Display & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;0,900;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            rose: {
+              50: '#fff0f3',
+              100: '#ffccd5',
+              200: '#ffb3c1',
+              400: '#ff758f',
+              500: '#ff4d6d',
+              600: '#c9184a',
+              950: '#4a1525'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Canvas Confetti Library -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="relative min-h-screen text-rose-950 selection:bg-rose-200">
+
+  <!-- Interactive Floating Background Heart Canvas -->
+  <canvas id="heartCanvas"></canvas>
+
+  <!-- Subtle Background Audio Element (Royalty-free romantic lofi stream with built-in synth fallback) -->
+  <!-- TO SWAP MUSIC: Replace the src URL below with your own mp3 audio file or link -->
+  <audio id="bgAudio" loop preload="auto">
+    <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=romantic-lofi-112191.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- Fixed Top Header & Navigation -->
+  <header class="fixed top-0 left-0 right-0 z-50 px-4 py-3 bg-white/70 backdrop-blur-md border-b border-rose-100 flex items-center justify-between shadow-sm">
+    <div class="flex items-center gap-3">
+      <span class="text-xl animate-pulse">💖</span>
+      <span class="font-serif font-bold text-rose-900 text-sm sm:text-base hidden xs:inline">Girlfriend's Day 2026</span>
+      <span id="musicStatusBadge" class="px-3 py-1 rounded-full text-xs font-bold bg-rose-100 text-rose-700 border border-rose-200 hidden sm:flex items-center gap-1.5">
+        🎵 Subtle Music Off
+      </span>
+    </div>
+    <div class="flex items-center gap-2 sm:gap-3">
+      <button id="musicToggleBtn" onclick="toggleMusic()" class="px-3.5 py-1.5 rounded-full text-xs font-bold bg-rose-100 text-rose-700 hover:bg-rose-200 active:scale-95 transition-all flex items-center gap-1.5 shadow-sm cursor-pointer border border-rose-200">
+        🎵 Play Music
+      </button>
+      <button id="soundToggleBtn" onclick="toggleSound()" class="px-3 py-1.5 rounded-full text-xs font-bold bg-rose-50 text-rose-600 hover:bg-rose-100 transition-all flex items-center gap-1 border border-rose-100">
+        🔊 SFX On
+      </button>
+      <a href="#letter" class="px-3.5 py-1.5 rounded-full text-xs font-bold bg-gradient-to-r from-rose-400 to-pink-500 text-white shadow-md hover:shadow-rose-300 hover:scale-105 transition-all">
+        Open Secret Letter 💌
+      </a>
+    </div>
+  </header>
+
+  <!-- Main Content Container -->
+  <main class="relative z-10 pt-24 pb-20 px-4 sm:px-6 max-w-5xl mx-auto space-y-24">
+
+    <!-- ========================================== -->
+    <!-- SECTION 1: HERO & REASONS CARD DECK -->
+    <!-- ========================================== -->
+    <section id="hero" class="text-center space-y-8 pt-6">
+      
+      <!-- Top Badge -->
+      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-rose-100/80 border border-rose-200 text-rose-700 font-semibold text-xs sm:text-sm shadow-sm backdrop-blur-sm">
+        <span class="animate-ping text-xs">✨</span> National Girlfriend's Day Special Edition <span class="animate-bounce">💕</span>
+      </div>
+
+      <!-- Main Romantic Headline -->
+      <div class="space-y-4 max-w-3xl mx-auto">
+        <h1 class="text-4xl sm:text-6xl font-extrabold font-serif tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-rose-600 via-pink-500 to-rose-400 leading-tight">
+          Happy Girlfriend's Day, my love! 💖
+        </h1>
+        <p class="text-base sm:text-lg text-rose-800 font-medium leading-relaxed max-w-2xl mx-auto">
+          Today is all about celebrating you—your smile, your warmth, your kindness, and all the magic you bring into my life every single day.
+        </p>
+      </div>
+
+      <!-- Interactive "Reasons Why I Love You" Card Deck -->
+      <div class="max-w-md mx-auto pt-4 space-y-4">
+        
+        <div class="flex items-center justify-between text-xs font-bold text-rose-500 uppercase tracking-wider px-2">
+          <span>💌 Interactive Reasons Deck</span>
+          <span id="cardCounter" class="bg-rose-100 px-2.5 py-0.5 rounded-full text-rose-700">1 of 10</span>
+        </div>
+
+        <!-- 3D Flippable Card -->
+        <div class="perspective-1000 w-full h-64 cursor-pointer" onclick="flipCard()">
+          <div id="reasonCardInner" class="card-inner relative w-full h-full transform-style-3d shadow-xl rounded-3xl">
+            
+            <!-- Card Front -->
+            <div class="absolute inset-0 w-full h-full glass-card rounded-3xl p-6 flex flex-col items-center justify-center text-center border-2 border-rose-200 backface-hidden space-y-3">
+              <div id="cardIconFront" class="text-5xl">✨</div>
+              <h3 id="cardTitleFront" class="text-2xl font-bold font-serif text-rose-900">Reason #1</h3>
+              <p class="text-xs font-semibold text-rose-400 bg-rose-50 px-3 py-1 rounded-full border border-rose-100">
+                (Click card to flip & reveal 💖)
+              </p>
+            </div>
+
+            <!-- Card Back -->
+            <div class="absolute inset-0 w-full h-full bg-gradient-to-br from-rose-500 to-pink-600 rounded-3xl p-6 text-white flex flex-col items-center justify-center text-center backface-hidden rotate-y-180 space-y-3 shadow-2xl">
+              <span class="text-xs font-bold uppercase tracking-widest text-pink-200">Why I Love You</span>
+              <p id="cardTextBack" class="text-lg font-bold font-serif leading-relaxed px-2">
+                The way your eyes light up whenever you laugh from the bottom of your heart. 💖
+              </p>
+              <span class="text-xs text-pink-100 font-medium">Click again to flip back 🔄</span>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Deck Controls -->
+        <div class="flex items-center justify-between gap-2 pt-2">
+          <button onclick="prevReason()" class="flex-1 py-2.5 px-3 bg-white/80 border border-rose-200 text-rose-800 font-bold rounded-2xl text-xs hover:bg-rose-50 transition-all shadow-sm">
+            ← Previous
+          </button>
+          <button onclick="shuffleReasons()" class="py-2.5 px-4 bg-rose-100 text-rose-700 font-bold rounded-2xl text-xs hover:bg-rose-200 transition-all shadow-sm">
+            Shuffle 🔀
+          </button>
+          <button onclick="nextReason()" class="flex-1 py-2.5 px-3 bg-gradient-to-r from-rose-400 to-pink-500 text-white font-bold rounded-2xl text-xs hover:shadow-md transition-all shadow-sm">
+            Next Reason →
+          </button>
+        </div>
+
+        <!-- Add Custom Reason Button -->
+        <div class="text-center">
+          <button onclick="openAddReasonModal()" class="text-xs font-bold text-rose-600 hover:text-rose-800 underline decoration-rose-300">
+            + Add your own custom reason
+          </button>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ========================================== -->
+    <!-- SECTION 2: INTERACTIVE MINI-GAMES & FEATURES -->
+    <!-- ========================================== -->
+    <section id="games" class="space-y-12">
+      
+      <!-- Section Header -->
+      <div class="text-center space-y-2">
+        <h2 class="text-3xl font-bold font-serif text-rose-950">Fun & Games For Us 🎮💕</h2>
+        <p class="text-sm text-rose-700 font-medium max-w-md mx-auto">Let's test your memory and calculate how deeply loved you are today!</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        
+        <!-- Game 1: Love Quiz Card -->
+        <div class="glass-card rounded-3xl p-6 sm:p-8 space-y-6 border border-rose-200 relative overflow-hidden">
+          <div class="flex items-center justify-between border-b border-rose-100 pb-4">
+            <h3 class="text-xl font-bold font-serif text-rose-900 flex items-center gap-2">
+              <span>🎯</span> "Our Love Quiz"
+            </h3>
+            <span class="text-xs font-bold text-rose-500 bg-rose-50 px-3 py-1 rounded-full border border-rose-100">3 Questions</span>
+          </div>
+
+          <!-- Quiz Container -->
+          <div id="quizContainer" class="space-y-6">
+            <!-- Quiz JS will render content here -->
+          </div>
+        </div>
+
+        <!-- Game 2: Love Meter & Kiss Counter Card -->
+        <div class="glass-card rounded-3xl p-6 sm:p-8 space-y-6 border border-rose-200 flex flex-col justify-between">
+          <div class="space-y-4">
+            <div class="flex items-center justify-between border-b border-rose-100 pb-4">
+              <h3 class="text-xl font-bold font-serif text-rose-900 flex items-center gap-2">
+                <span>🌡️</span> "Rate My Love For You"
+              </h3>
+              <span id="lovePercentVal" class="text-sm font-extrabold text-rose-600 bg-rose-100 px-3 py-1 rounded-full">500%</span>
+            </div>
+
+            <p class="text-xs text-rose-700 font-medium">Drag the love slider below to calculate my affection levels for you!</p>
+
+            <!-- Love Slider -->
+            <div class="space-y-3 pt-2">
+              <input type="range" id="loveSlider" min="0" max="1000" value="500" class="w-full h-3 bg-rose-100 rounded-lg appearance-none cursor-pointer">
+              <div class="flex justify-between text-xs font-bold text-rose-400">
+                <span>0% (Impossible)</span>
+                <span>500% (Overflowing)</span>
+                <span>1000% (Infinite)</span>
+              </div>
+            </div>
+
+            <!-- Dynamic Status Output -->
+            <div class="p-4 bg-rose-50/80 rounded-2xl border border-rose-200 text-center">
+              <p id="loveStatusMsg" class="text-sm font-bold text-rose-900 font-serif">
+                My love is overflowing beyond capacity! 🌊💖
+              </p>
+            </div>
+          </div>
+
+          <!-- Kiss Counter Sub-Feature -->
+          <div class="pt-6 border-t border-rose-100 flex items-center justify-between">
+            <div>
+              <div class="text-xs text-rose-500 font-bold uppercase tracking-wider flex items-center gap-1">
+                <span>Kiss Counter 💋</span>
+                <button onclick="resetKissCounter()" class="text-[10px] text-rose-400 hover:text-rose-700 underline font-normal cursor-pointer" title="Reset Kiss Counter">Reset 🔄</button>
+              </div>
+              <div class="text-2xl font-extrabold text-rose-900 font-serif">
+                <span id="kissCountEl">0</span> <span class="text-xs font-normal text-rose-600">kisses sent today</span>
+              </div>
+            </div>
+            <button onclick="sendKiss(event)" class="px-5 py-2.5 bg-rose-500 text-white font-bold rounded-full shadow-md hover:bg-rose-600 hover:scale-105 active:scale-95 transition-all text-xs flex items-center gap-1.5 cursor-pointer">
+              Send Kiss 💋
+            </button>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ========================================== -->
+    <!-- SECTION 3: PHOTO MEMORIES GALLERY -->
+    <!-- ========================================== -->
+    <section id="gallery" class="space-y-8">
+      
+      <!-- Section Header with Add Memory Button -->
+      <div class="text-center space-y-3">
+        <span class="text-xs font-bold text-rose-500 uppercase tracking-widest bg-rose-100 px-3 py-1 rounded-full border border-rose-200">Our Favorite Moments</span>
+        <h2 class="text-3xl sm:text-4xl font-bold font-serif text-rose-950">Memory Lane Polaroid Grid 📸</h2>
+        <p class="text-sm text-rose-700 font-medium max-w-md mx-auto">Click any photo to enlarge and read our cute memory notes!</p>
+        
+        <!-- Interactive Add Memory Button -->
+        <div class="pt-2">
+          <button onclick="openAddMemoryModal()" class="px-5 py-2.5 bg-gradient-to-r from-rose-500 to-pink-500 text-white font-bold rounded-full shadow-md hover:shadow-rose-300 hover:scale-105 active:scale-95 transition-all text-xs inline-flex items-center gap-2 cursor-pointer border border-white">
+            <span>✨</span> + Add New Memory Photo 📸
+          </button>
+        </div>
+      </div>
+
+      <!-- Polaroid Cards Grid (Supports 6 Preset + Dynamically Added Photos) -->
+      <div id="memoriesGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 pt-4">
+
+        <!-- Featured Polaroid 1: Cozy Cuddle Moment (Real User Photo) -->
+        <div class="polaroid-card cursor-pointer -rotate-2" onclick="openLightbox('assets/images/polaroid_cuddle_moment.jpg', 'In Your Arms 💖', 'Safe, warm, and happier than ever in your arms. Resting against you is my ultimate comfort zone, and I never want to let go!')">
+          <div class="polaroid-tape"></div>
+          <div class="overflow-hidden rounded bg-rose-50 aspect-square relative">
+            <span class="absolute top-2 right-2 z-10 text-[10px] font-extrabold bg-rose-500/90 text-white px-2.5 py-0.5 rounded-full shadow backdrop-blur-sm">Featured ✨</span>
+            <img src="assets/images/polaroid_cuddle_moment.jpg" alt="In Your Arms" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
+          </div>
+          <div class="pt-3 text-center">
+            <p class="font-serif font-bold text-rose-900 text-base">In Your Arms 💖</p>
+            <p class="text-xs text-rose-500 font-medium">Warmest Cuddles 🫂</p>
+          </div>
+        </div>
+
+        <!-- Featured Polaroid 2: Real Memory Photo -->
+        <div class="polaroid-card cursor-pointer rotate-2" onclick="openLightbox('assets/images/polaroid_special_moment.jpg', 'Together With You 💖', 'Dressed up, holding hands, and creating unforgettable memories together. My absolute favorite place in the world is right next to you!')">
+          <div class="polaroid-tape"></div>
+          <div class="overflow-hidden rounded bg-rose-50 aspect-square">
+            <img src="assets/images/polaroid_special_moment.jpg" alt="Together With You" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
+          </div>
+          <div class="pt-3 text-center">
+            <p class="font-serif font-bold text-rose-900 text-base">Together With You 💖</p>
+            <p class="text-xs text-rose-500 font-medium">Our Special Moment ✨</p>
+          </div>
+        </div>
+
+        <!-- Featured Polaroid 3: Sweetest Kiss (Real User Photo) -->
+        <div class="polaroid-card cursor-pointer -rotate-1" onclick="openLightbox('assets/images/polaroid_sweet_kiss.jpg', 'Sweetest Kiss 💋💖', 'The sweetest moment holding your face close and feeling my heart beat so fast. Every kiss with you feels like magic!')">
+          <div class="polaroid-tape"></div>
+          <div class="overflow-hidden rounded bg-rose-50 aspect-square">
+            <img src="assets/images/polaroid_sweet_kiss.jpg" alt="Sweetest Kiss" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
+          </div>
+          <div class="pt-3 text-center">
+            <p class="font-serif font-bold text-rose-900 text-base">Sweetest Kiss 💋💖</p>
+            <p class="text-xs text-rose-500 font-medium">Pure Magic ✨</p>
+          </div>
+        </div>
+
+        <!-- DYNAMIC CUSTOM MEMORIES CONTAINER -->
+        <div id="customMemoriesContainer" class="contents"></div>
+
+      </div>
+
+    </section>
+
+    <!-- ========================================== -->
+    <!-- SECTION 3.5: VIDEO MEMORIES CAROUSEL -->
+    <!-- ========================================== -->
+    <section id="videoCarouselSection" class="space-y-8">
+      
+      <!-- Section Header -->
+      <div class="text-center space-y-3">
+        <span class="text-xs font-bold text-rose-500 uppercase tracking-widest bg-rose-100 px-3.5 py-1.5 rounded-full border border-rose-200 shadow-sm inline-flex items-center gap-1.5">
+          <span>🎬</span> Our Cinema Reel
+        </span>
+        <h2 class="text-3xl sm:text-5xl font-bold font-serif text-rose-950">Our Moving Memories 🎞️</h2>
+        <p class="text-sm text-rose-700 font-medium max-w-md mx-auto leading-relaxed">Watch our sweetest video snippets, laughter filled moments, and cute highlights in high definition!</p>
+        
+        <div class="pt-2">
+          <button onclick="openAddVideoModal()" class="px-6 py-2.5 bg-gradient-to-r from-rose-500 via-pink-500 to-rose-400 text-white font-bold rounded-full shadow-lg hover:shadow-rose-300 hover:scale-105 active:scale-95 transition-all text-xs inline-flex items-center gap-2 cursor-pointer border border-white">
+            <span>✨</span> + Add Video Clip 🎥
+          </button>
+        </div>
+      </div>
+
+      <!-- Video Carousel Main Container (Cinema Frame) -->
+      <div class="max-w-4xl mx-auto glass-card rounded-3xl p-4 sm:p-7 space-y-5 border-2 border-rose-200 shadow-2xl relative video-glow-frame">
+        
+        <!-- Film Reel Header Sprockets Bar -->
+        <div class="h-3.5 w-full film-strip-border rounded-t-xl opacity-60"></div>
+
+        <!-- Video Player Wrapper -->
+        <div class="relative overflow-hidden rounded-2xl bg-black aspect-video flex items-center justify-center border-2 border-rose-950/20 shadow-2xl group">
+          
+          <!-- Active Video Element -->
+          <video id="carouselVideoPlayer" controls playsinline class="w-full h-full object-contain">
+            <source id="videoSource" src="https://assets.mixkit.co/videos/preview/mixkit-couple-walking-hand-in-hand-on-the-beach-41484-large.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+
+          <!-- Floating Vintage Camera Header Overlay -->
+          <div class="absolute top-3 left-3 right-3 flex justify-between items-center pointer-events-none z-10">
+            <div class="flex items-center gap-2 bg-black/60 backdrop-blur-md px-3 py-1 rounded-full text-white text-xs font-mono border border-white/20">
+              <span class="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
+              <span class="text-[11px] font-bold tracking-wider">● REC 4K</span>
+            </div>
+            <div class="bg-black/60 backdrop-blur-md px-3 py-1 rounded-full text-white text-xs font-mono border border-white/20">
+              <span>🎞️ Reel <span id="currentVideoIndexNum">1/3</span></span>
+            </div>
+          </div>
+
+          <!-- Video Carousel Quick Hover Overlay Arrows -->
+          <button onclick="prevVideoSlide()" class="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/40 hover:bg-rose-500/90 text-white backdrop-blur-md flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 shadow-lg cursor-pointer text-base border border-white/30 hover:scale-110 z-20">
+            ❮
+          </button>
+          <button onclick="nextVideoSlide()" class="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/40 hover:bg-rose-500/90 text-white backdrop-blur-md flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 shadow-lg cursor-pointer text-base border border-white/30 hover:scale-110 z-20">
+            ❯
+          </button>
+
+        </div>
+
+        <!-- Film Reel Bottom Sprockets Bar -->
+        <div class="h-3.5 w-full film-strip-border rounded-b-xl opacity-60"></div>
+
+        <!-- Video Caption & Info Bar -->
+        <div class="p-5 bg-gradient-to-r from-rose-50 via-pink-50/80 to-rose-50 rounded-2xl border border-rose-200/80 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-sm">
+          <div class="space-y-1.5">
+            <div class="flex items-center gap-2">
+              <span id="videoCategoryTag" class="text-[10px] font-extrabold uppercase tracking-wider text-rose-700 bg-rose-200/80 px-3 py-1 rounded-full border border-rose-300">Beach Walk 🌊</span>
+              <span id="videoDateTag" class="text-xs text-rose-400 font-bold">Summer Highlight</span>
+            </div>
+            <h3 id="videoTitleText" class="text-xl font-serif font-bold text-rose-950">Hand in Hand by the Waves 🏖️</h3>
+            <p id="videoCaptionText" class="text-xs sm:text-sm text-rose-800 leading-relaxed max-w-xl">Walking along the shoreline as the sunset painted the sky in soft pinks and gold.</p>
+          </div>
+
+          <!-- Quick Actions & Love Button -->
+          <div class="flex items-center gap-3 shrink-0">
+            <button onclick="playChime(); confetti({particleCount: 50, spread: 60});" class="px-4 py-2.5 rounded-full bg-gradient-to-r from-rose-500 to-pink-500 text-white hover:scale-105 active:scale-95 transition-all text-xs font-bold flex items-center gap-1.5 shadow-md border border-white cursor-pointer" title="Love this memory">
+              💖 Love This Memory!
+            </button>
+          </div>
+        </div>
+
+        <!-- Interactive Film Strip Thumbnail Selector -->
+        <div class="space-y-2 pt-2">
+          <div class="flex items-center justify-between px-1 text-xs font-bold text-rose-500 uppercase tracking-wider">
+            <span>🎞️ Interactive Film Reel Strip</span>
+            <span class="text-[10px] font-medium text-rose-400">Click any reel to play 🎬</span>
+          </div>
+          <div id="videoThumbnailsStrip" class="flex items-center gap-3 overflow-x-auto pb-2">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+
+        <!-- Carousel Navigation Controls -->
+        <div class="flex items-center justify-between gap-3 pt-1 border-t border-rose-100/60">
+          <button onclick="prevVideoSlide()" class="py-2.5 px-4 bg-white border border-rose-200 text-rose-800 font-bold rounded-2xl text-xs hover:bg-rose-50 hover:border-rose-300 transition-all shadow-sm flex items-center gap-1.5 cursor-pointer">
+            ← Previous Clip
+          </button>
+          
+          <!-- Slide Dots Indicator -->
+          <div id="videoDotsContainer" class="flex items-center gap-2">
+            <!-- Rendered by JS -->
+          </div>
+
+          <button onclick="nextVideoSlide()" class="py-2.5 px-4 bg-gradient-to-r from-rose-400 to-pink-500 text-white font-bold rounded-2xl text-xs hover:shadow-md hover:scale-105 transition-all shadow-sm flex items-center gap-1.5 cursor-pointer">
+            Next Clip →
+          </button>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ========================================== -->
+    <!-- SECTION 4: SECRET LOVE LETTER & CTA -->
+    <!-- ========================================== -->
+    <section id="letter" class="space-y-8 pt-4">
+      
+      <div class="text-center space-y-2">
+        <h2 class="text-3xl font-bold font-serif text-rose-950">A Secret Message For You 💌</h2>
+        <p class="text-sm text-rose-700 font-medium">Click the wax seal below to unseal your love letter!</p>
+      </div>
+
+      <!-- Envelope Card -->
+      <div class="max-w-2xl mx-auto">
+        <div id="loveEnvelope" class="envelope p-6 sm:p-10 text-center space-y-6">
+          
+          <!-- Wax Seal Button -->
+          <button onclick="toggleEnvelope()" class="mx-auto w-16 h-16 rounded-full bg-gradient-to-tr from-rose-600 to-rose-400 text-white font-serif font-bold text-2xl flex items-center justify-center shadow-lg hover:scale-110 active:scale-95 transition-all pulse-glow border-2 border-white cursor-pointer">
+            💌
+          </button>
+          
+          <div class="font-serif font-bold text-lg text-rose-900">
+            "Open When You're Ready"
+          </div>
+
+          <!-- Unfoldable Letter Content -->
+          <div class="letter-content text-left space-y-4 pt-4 border-t border-rose-200">
+            <div class="font-serif italic text-rose-600 text-lg">My Dearest Love,</div>
+            
+            <p class="text-sm sm:text-base text-rose-900 leading-relaxed">
+              Happy National Girlfriend's Day! Today is just a tiny excuse to remind you of something I feel every single second: you are the most incredible, beautiful, kind, and wonderful person I have ever known.
+            </p>
+            
+            <p class="text-sm sm:text-base text-rose-900 leading-relaxed">
+              Thank you for filling my world with so much warmth, laughter, and endless comfort. Whether we are embarking on big adventures or just lounging together doing absolutely nothing, every moment spent with you is my absolute favorite.
+            </p>
+
+            <p class="text-sm sm:text-base text-rose-900 leading-relaxed">
+              I love you today, tomorrow, and for all the days to come. Here's to us and to many more memories together!
+            </p>
+
+            <div class="pt-4 flex justify-between items-end">
+              <div>
+                <p class="text-xs text-rose-500 font-bold uppercase">Forever & Always,</p>
+                <p class="font-serif font-extrabold text-rose-900 text-xl">Your Biggest Fan ❤️</p>
+              </div>
+              <span class="text-2xl">🌹</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Final Love Explosion CTA Button -->
+      <div class="text-center pt-8 space-y-4">
+        <button onclick="triggerLoveExplosion()" class="px-8 py-4 bg-gradient-to-r from-rose-500 via-pink-500 to-rose-400 text-white font-extrabold font-serif text-lg rounded-full shadow-xl hover:shadow-rose-300 hover:scale-105 active:scale-95 transition-all flex items-center gap-3 mx-auto border-2 border-white">
+          <span>💥</span> Click for Unlimited Love Explosion! 💖 <span>✨</span>
+        </button>
+        <p class="text-xs text-rose-500 font-medium">Warning: May cause intense smiling & floating hearts!</p>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- Lightbox Modal for Photo Gallery -->
+  <div id="lightboxModal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-md hidden items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-lg w-full p-6 space-y-4 relative shadow-2xl border border-rose-200 animate-fadeIn">
+      <button onclick="closeLightbox()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-700 font-bold text-xl w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center">
+        ✕
+      </button>
+      <div class="overflow-hidden rounded-2xl bg-rose-50 max-h-80 flex items-center justify-center">
+        <img id="lightboxImg" src="" alt="Polaroid Memory" class="w-full h-full object-cover">
+      </div>
+      <div class="space-y-1">
+        <h4 id="lightboxTitle" class="text-xl font-serif font-bold text-rose-950">Memory Title</h4>
+        <p id="lightboxCaption" class="text-sm text-rose-800 leading-relaxed">Memory caption goes here...</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Custom Reason Modal -->
+  <div id="addReasonModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 space-y-4 relative shadow-2xl border border-rose-200">
+      <div class="flex items-center justify-between border-b border-rose-100 pb-3">
+        <h4 class="text-lg font-serif font-bold text-rose-900">Add a Custom Reason 💌</h4>
+        <button onclick="closeAddReasonModal()" class="text-gray-400 hover:text-gray-600 font-bold">✕</button>
+      </div>
+      <p class="text-xs text-rose-600">Type a special reason why you love her:</p>
+      <textarea id="customReasonInput" rows="3" class="w-full p-3 rounded-2xl border border-rose-200 focus:outline-none focus:ring-2 focus:ring-rose-400 text-sm text-rose-900" placeholder="e.g. The way you make the best tea every morning..."></textarea>
+      <div class="flex justify-end gap-2 pt-2">
+        <button onclick="closeAddReasonModal()" class="px-4 py-2 text-xs font-bold text-gray-500 hover:bg-gray-100 rounded-full">Cancel</button>
+        <button onclick="saveCustomReason()" class="px-5 py-2 text-xs font-bold bg-rose-500 text-white rounded-full hover:bg-rose-600">Save Reason 💖</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Custom Memory Modal -->
+  <div id="addMemoryModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 space-y-4 relative shadow-2xl border border-rose-200">
+      <div class="flex items-center justify-between border-b border-rose-100 pb-3">
+        <h4 class="text-lg font-serif font-bold text-rose-900">Add New Memory Photo 📸</h4>
+        <button onclick="closeAddMemoryModal()" class="text-gray-400 hover:text-gray-600 font-bold">✕</button>
+      </div>
+      
+      <div class="space-y-3">
+        <div>
+          <label class="block text-xs font-bold text-rose-800 mb-1">Image URL or Local Path:</label>
+          <input type="text" id="memoryImgInput" class="w-full p-2.5 rounded-xl border border-rose-200 focus:outline-none focus:ring-2 focus:ring-rose-400 text-xs text-rose-900" placeholder="e.g. https://example.com/photo.jpg or assets/images/my_pic.jpg">
+          <p class="text-[10px] text-gray-400 mt-1">Or select a local file below:</p>
+          <input type="file" id="memoryFileInput" accept="image/*" class="mt-1 text-xs text-gray-500 w-full">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-rose-800 mb-1">Memory Title:</label>
+          <input type="text" id="memoryTitleInput" class="w-full p-2.5 rounded-xl border border-rose-200 focus:outline-none focus:ring-2 focus:ring-rose-400 text-xs text-rose-900" placeholder="e.g. Ice Cream Date 🍦">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-rose-800 mb-1">Sub-tag / Date:</label>
+          <input type="text" id="memoryTagInput" class="w-full p-2.5 rounded-xl border border-rose-200 focus:outline-none focus:ring-2 focus:ring-rose-400 text-xs text-rose-900" placeholder="e.g. Friday Afternoon">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-rose-800 mb-1">Cute Caption / Story:</label>
+          <textarea id="memoryCaptionInput" rows="2" class="w-full p-2.5 rounded-xl border border-rose-200 focus:outline-none focus:ring-2 focus:ring-rose-400 text-xs text-rose-900" placeholder="e.g. Laughing together while our ice cream melted..."></textarea>
+        </div>
+      </div>
+
+      <div class="flex justify-end gap-2 pt-2 border-t border-rose-100">
+        <button onclick="closeAddMemoryModal()" class="px-4 py-2 text-xs font-bold text-gray-500 hover:bg-gray-100 rounded-full">Cancel</button>
+        <button onclick="saveCustomMemory()" class="px-5 py-2 text-xs font-bold bg-rose-500 text-white rounded-full hover:bg-rose-600 shadow-md">Add Memory 📸</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Custom Video Modal -->
+  <div id="addVideoModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 space-y-4 relative shadow-2xl border border-rose-200">
+      <div class="flex items-center justify-between border-b border-rose-100 pb-3">
+        <h4 class="text-lg font-serif font-bold text-rose-900">Add Video Clip 🎥</h4>
+        <button onclick="closeAddVideoModal()" class="text-gray-400 hover:text-gray-600 font-bold">✕</button>
+      </div>
+      
+      <div class="space-y-3">
+        <div>
+          <label class="block text-xs font-bold text-rose-800 mb-1">Video URL or Local Path (.mp4):</label>
+          <input type="text" id="videoUrlInput" class="w-full p-2.5 rounded-xl border border-rose-200 focus:outline-none focus:ring-2 focus:ring-rose-400 text-xs text-rose-900" placeholder="e.g. assets/videos/clip.mp4 or https://example.com/video.mp4">
+          <p class="text-[10px] text-gray-400 mt-1">Or pick a video file from your device:</p>
+          <input type="file" id="videoFileInput" accept="video/*" class="mt-1 text-xs text-gray-500 w-full">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-rose-800 mb-1">Video Title:</label>
+          <input type="text" id="videoTitleInput" class="w-full p-2.5 rounded-xl border border-rose-200 focus:outline-none focus:ring-2 focus:ring-rose-400 text-xs text-rose-900" placeholder="e.g. Sunset Laughs 🌅">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-rose-800 mb-1">Tag / Date:</label>
+          <input type="text" id="videoTagInput" class="w-full p-2.5 rounded-xl border border-rose-200 focus:outline-none focus:ring-2 focus:ring-rose-400 text-xs text-rose-900" placeholder="e.g. Summer Date">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-rose-800 mb-1">Caption / Story:</label>
+          <textarea id="videoCaptionInput" rows="2" class="w-full p-2.5 rounded-xl border border-rose-200 focus:outline-none focus:ring-2 focus:ring-rose-400 text-xs text-rose-900" placeholder="e.g. A cute quick video snippet from our beach trip..."></textarea>
+        </div>
+      </div>
+
+      <div class="flex justify-end gap-2 pt-2 border-t border-rose-100">
+        <button onclick="closeAddVideoModal()" class="px-4 py-2 text-xs font-bold text-gray-500 hover:bg-gray-100 rounded-full">Cancel</button>
+        <button onclick="saveCustomVideo()" class="px-5 py-2 text-xs font-bold bg-rose-500 text-white rounded-full hover:bg-rose-600 shadow-md">Add Video 🎥</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Love Toast Notification -->
+  <div id="loveToast" class="fixed bottom-6 right-6 z-50 bg-rose-900 text-white px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-3 transition-all duration-500 opacity-0 pointer-events-none border border-rose-400">
+    <span class="text-2xl">💖</span>
+    <div>
+      <div class="font-bold font-serif text-sm">Infinite Love Explosion Activated!</div>
+      <div class="text-xs text-rose-200">Sending 1,000,000 hugs and kisses your way! ✨</div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="relative z-10 py-8 text-center border-t border-rose-100/60 bg-white/40 backdrop-blur-sm text-xs text-rose-500 font-medium">
+    Made with endless ❤️ for National Girlfriend's Day 2026.
+  </footer>
+
+  <!-- Custom App Script -->
+  <script src="script.js"></script>
+</body>
+</html>
